@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eye.AI - Chat Assistant</title>
+  <style>
+    :root {
+      --primary: #2b5876;
+      --secondary: #4e4376;
+      --accent: #5b86e5;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 5%;
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin-left: 2rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: var(--accent);
+    }
+
+    .welcome-section {
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .welcome-section h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .chat-window {
+      width: 100%;
+      max-width: 700px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .message {
+      padding: 0.8rem 1rem;
+      background: #f1f1f1;
+      border-radius: 8px;
+      max-width: 80%;
+      align-self: flex-start;
+    }
+
+    .message.user {
+      background: var(--accent);
+      color: white;
+      align-self: flex-end;
+    }
+
+    .input-area {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #ddd;
+      padding-top: 1rem;
+      gap: 0.5rem;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 1rem;
+      gap: 15px;
+    }
+
+    .input-area button {
+      padding: 0.6rem 1.2rem;
+      border-radius: 50%;
+      border: none;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .input-area button i {
+        font-size: 24px;
+    }
+    .input-area button:hover {
+      background-color: var(--secondary);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background-color: white;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav ul li {
+        margin: 0.5rem;
+      }
+
+      .welcome-section h1 {
+        font-size: 2rem;
+      }
+    }
+    .Search-icon-button {
+        border: none;
+        background-color: transparent;
+        background-image: url('https://img.icons8.com/ios-filled/24/000000/microphone.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 20px 20px;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <a href="#" class="logo">Eye.AI</a>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Upgrade</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="welcome-section">
+    <h1>Ask Anything with Eye.AI</h1>
+  </section>
+
+  <main class="main-content">
+    <div class="chat-window" id="chatWindow">
+      <div class="message">Hi! I am Eye.AI. How can I help you?</div>
+      <div class="input-area">
+        <span class="add-icon">+</span>
+        <input type="text" id="chatInput" placeholder="Ask me anything...">
+        <button onclick="startListening()" id="VoiceSeachButton" class="Search-icon-button" title="search by voice"></button>
+        <button onclick="sendMessage()">➤</button>
+        <button onclick="startListening()" id="VoiceSeachButton" class="Search-icon-button" title="search by voice"></button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Eye.AI. All rights reserved.</p>
+  </footer>
+
+<script>
+  async function sendMessage() {
+    const input = document.getElementById("chatInput");
+    const message = input.value.trim();
+    if (!message) return;
+
+    const chatWindow = document.getElementById("chatWindow");
+
+    const userMsg = document.createElement("div");
+    userMsg.className = "message user";
+    userMsg.textContent = message;
+    chatWindow.insertBefore(userMsg, chatWindow.querySelector(".input-area"));
+
+    input.value = "";
+
+    // 🟣 Send message to Flask backend
+    try {
+      const response = await fetch('/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: message })
+      });
+      const data = await response.json();
+
+      const botMsg = document.createElement("div");
+      botMsg.className = "message";
+      botMsg.textContent = data.reply;
+      chatWindow.insertBefore(botMsg, chatWindow.querySelector(".input-area"));
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  function startListening() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Your browser does not support speech recognition.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+
+    recognition.start();
+
+    recognition.onresult = function (event) {
+      const transcript = event.results[0][0].transcript;
+      document.getElementById("chatInput").value = transcript;
+      sendMessage();
+    };
+
+    recognition.onerror = function (event) {
+      alert("Mic error: " + event.error);
+    };
+  }
+</script>
+
+</body>
+</html>

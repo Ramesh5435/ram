@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search Bar with Microphone</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+  margin: 0;
+}
+
+.search-container {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.search-container input {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  width: 200px;
+}
+
+.search-container button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background-color: #0056b3;
+}
+
+#micButton {
+  background-color: #28a745;
+}
+
+#micButton:hover {
+  background-color: #1e7e34;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search...">
+    <button onclick="performSearch()">Search</button>
+    <button id="micButton" onclick="startListening()">
+      🎤
+    </button>
+  </div>
+
+  <div id="result"></div>
+
+  <!-- <script src="script.js"></script> -->
+  <script>
+    function performSearch() {
+  const query = document.getElementById('searchInput').value;
+  if (query.trim() === "") {
+    document.getElementById('result').innerText = "Please enter a search term.";
+  } else {
+    document.getElementById('result').innerText = `You searched for: ${query}`;
+  }
+}
+
+// Microphone functionality
+function startListening() {
+  // Browser compatibility
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  
+  if (!SpeechRecognition) {
+    alert("Your browser does not support Speech Recognition");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'en-US'; // Change to 'hi-IN' for Hindi
+  
+  recognition.start();
+
+  recognition.onresult = function(event) {
+    const transcript = event.results[0][0].transcript;
+    document.getElementById('searchInput').value = transcript;
+    performSearch();
+  };
+
+  recognition.onerror = function(event) {
+    alert("Error occurred in recognition: " + event.error);
+  };
+}
+
+  </script>
+</body>
+</html>
